@@ -22,31 +22,17 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Install Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          google-chrome --version
-      
-      - name: Install ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')
-          CHROMEDRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json" | jq -r ".channels.Stable.version")
-          echo "Detected Chrome version: $CHROME_VERSION"
-          echo "Matching ChromeDriver version: $CHROMEDRIVER_VERSION"
-          wget -N "https://storage.googleapis.com/chrome-for-testing-public/$CHROMEDRIVER_VERSION/linux64/chromedriver-linux64.zip"
-          unzip chromedriver-linux64.zip
-          chmod +x chromedriver-linux64/chromedriver
-          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
-        
-      - name: Check Chrome and ChromeDriver version
+      - name: Install Chrome and ChromeDriver (matching versions)
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Verify Chrome and ChromeDriver versions
         run: |
           google-chrome --version
           chromedriver --version
-      
+
       - name: Set ChromeDriver Path
         run: echo "CHROMEDRIVER_PATH=/usr/local/bin/chromedriver" >> $GITHUB_ENV
-         
+
       - name: Verify current directory and permissions
         run: |
           echo "Current directory: $(pwd)"
@@ -63,20 +49,19 @@ jobs:
           CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
         run: ./gradlew clean test aggregate --stacktrace
         continue-on-error: true
-          
+
       - name: Verify if Serenity reports exist
         run: |
           if [ -d "target/site/serenity" ]; then
             echo "Serenity reports found!"
           else
             echo "No Serenity reports found. Skipping upload step."
-            exit 0  # Exit without error to prevent build failure
+            exit 0
           fi
-      
+
       - name: Upload Serenity Report
         uses: actions/upload-artifact@v4
         with:
           name: serenity-report
           path: target/site/serenity
-        continue-on-error: true  # Continue even if the previous steps fail
-        
+        continue-on-error: true
