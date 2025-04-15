@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
         features= {"src/test/resources/features/sampleApp/"},
         glue="com.certificacion.HansJ.stepDefinitions.sampleApp",
         plugin = {"pretty","json:target/cucumber-reports/cucumber.json"},
-        tags = "@Logout",
+        tags = "@SampleApp",
         snippets = CucumberOptions.SnippetType.CAMELCASE
 )
 public class AcceptanceTestSuite {
