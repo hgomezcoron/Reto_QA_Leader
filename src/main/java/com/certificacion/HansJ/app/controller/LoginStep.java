@@ -32,7 +32,7 @@ public class LoginStep extends UIInteractionSteps {
     @Step("Validate greeting message")
     public void validateGreeting(String expectedMessage) {
         String actualMessage = loginPage.messageLogIn().getText().trim();
-        assertTrue(actualMessage.contains(expectedMessage),
+        assertTrue(actualMessage.equals(expectedMessage),
                 "Expected message to contain: " + expectedMessage + " but was: " + actualMessage);
     }
 }

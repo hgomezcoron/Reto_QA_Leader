@@ -9,7 +9,7 @@ Feature: Login functionality on UITestingPlayground
     Given the user is on the login page SampleAPP
     And the user enters username TestUser and password pwd
     When clicks the login button
-    Then the message should say Welcome, TestUser
+    Then the message should say Welcome, TestUser!
 
   @InvalidPassword
   Scenario: Login with Invalid Password
@@ -43,4 +43,4 @@ Feature: Login functionality on UITestingPlayground
   Scenario: Logout After Successful Login
     Given the user successfully login with username TestUser and password pwd
     When the user clicks logout button
-    Then the message should say User logged out
+    Then the message should say User logged out.
