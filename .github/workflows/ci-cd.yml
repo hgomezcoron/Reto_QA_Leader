@@ -47,6 +47,7 @@ jobs:
       - name: Run tests with Gradle
         env:
           CHROMEDRIVER_PATH: /usr/local/bin/chromedriver
+          WEBDRIVER_CHROME_DRIVER: /usr/local/bin/chromedriver
         run: ./gradlew clean test aggregate --stacktrace
         continue-on-error: true
 
